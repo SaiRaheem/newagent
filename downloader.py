@@ -32,7 +32,7 @@ class GoogleDriveDownloader:
             download_url = f"https://drive.google.com/uc?id={file_id}"
             
             print(f"Downloading video from Google Drive...")
-            gdown.download(download_url, output_path, quiet=False)
+            gdown.download(download_url, output_path, quiet=False,fuzzy=True)
             
             if os.path.exists(output_path):
                 print(f"Video downloaded successfully: {output_path}")

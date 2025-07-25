@@ -11,7 +11,7 @@ def main():
     config = Config()
     
     # Video settings - CONFIGURE THESE
-    GDRIVE_VIDEO_URL = "https://drive.google.com/uc?id=1UVoxrF0UPXo761sPKhxdSySA3mzm6MKv"
+    GDRIVE_VIDEO_URL = "https://drive.google.com/file/d/1UVoxrF0UPXo761sPKhxdSySA3mzm6MKv/view?usp=sharing"
  # Replace with your Google Drive URL
     VIDEO_START_TIME = 0      # Start processing from this time (seconds)
     VIDEO_END_TIME = None     # End processing at this time (seconds) - None for full video

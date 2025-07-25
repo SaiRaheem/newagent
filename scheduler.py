@@ -1,5 +1,5 @@
 import os
-import schedule
+import scheduler
 import time
 import threading
 from datetime import datetime

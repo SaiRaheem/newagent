@@ -22,27 +22,24 @@ class GoogleDriveDownloader:
         """Download video from Google Drive"""
         try:
             os.makedirs(os.path.dirname(output_path), exist_ok=True)
-            
-            # Check if file already exists
+
             if os.path.exists(output_path):
                 print(f"Video already exists: {output_path}")
                 return output_path
-            
-            file_id = self.extract_file_id(gdrive_url)
-            download_url = f"https://drive.google.com/uc?id={file_id}"
-            
+
             print(f"Downloading video from Google Drive...")
-            gdown.download(download_url, output_path, quiet=False,fuzzy=True)
-            
+            gdown.download(gdrive_url, output_path, quiet=False, fuzzy=True)
+
             if os.path.exists(output_path):
                 print(f"Video downloaded successfully: {output_path}")
                 return output_path
             else:
                 raise Exception("Download failed - file not found")
-                
+
         except Exception as e:
             print(f"Error downloading video: {e}")
             raise
+
 
 class StateManager:
     def __init__(self, state_file: str):

@@ -1,0 +1,45 @@
+.env
+
+# Downloaded videos and clips
+downloads/
+clips/
+*.mp4
+*.avi
+*.mov
+*.mkv
+
+# Processing state
+processing_state.json
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Virtual environment
+venv/
+env/
+ENV/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+temp-audio.m4a
+*.tmp
+EOF

@@ -38,15 +38,6 @@ class VideoProcessor:
                     )
 
                 clip = video.subclip(start_time, actual_end_time)
-                target_height = 1920
-                target_width = 1080
-                clip = clip.resize(height=target_height)
-                clip = clip.crop(
-    x_center=clip.w / 2,
-    width=target_width,
-    y_center=clip.h / 2,
-    height=target_height
-)
 
                 clip.write_videofile(
                     output_path,

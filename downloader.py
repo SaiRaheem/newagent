@@ -1,14 +1,14 @@
 import os
-import requests
 import json
+import gdown
 from config import Config
 
-class GoogleDriveDownloader:  # Rename if needed
+class GoogleDriveDownloader:
     def __init__(self, config: Config):
         self.config = config
 
-    def download_video(self, url: str, output_path: str) -> str:
-        """Download video from Dropbox or direct URL"""
+    def download_video(self, gdrive_url: str, output_path: str) -> str:
+        """Download video from Google Drive using gdown with fuzzy support"""
         try:
             os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
@@ -16,19 +16,17 @@ class GoogleDriveDownloader:  # Rename if needed
                 print(f"Video already exists: {output_path}")
                 return output_path
 
-            print(f"Downloading video from URL: {url}")
-            with requests.get(url, stream=True) as r:
-                r.raise_for_status()
-                with open(output_path, 'wb') as f:
-                    for chunk in r.iter_content(chunk_size=8192):
-                        if chunk:
-                            f.write(chunk)
+            print(f"Downloading video from Google Drive...")
+            gdown.download(gdrive_url, output_path, quiet=False, fuzzy=True)
 
-            print(f"Video downloaded successfully: {output_path}")
-            return output_path
+            if os.path.exists(output_path):
+                print(f"✅ Video downloaded successfully: {output_path}")
+                return output_path
+            else:
+                raise Exception("Download failed - file not found")
 
         except Exception as e:
-            print(f"Error downloading video: {e}")
+            print(f"❌ Error downloading video: {e}")
             raise
 
 class StateManager:

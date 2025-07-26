@@ -1,4 +1,3 @@
-# config.py
 import os
 from dataclasses import dataclass
 
@@ -13,14 +12,11 @@ class Config:
     CLOUDINARY_API_KEY: str = os.getenv('CLOUDINARY_API_KEY', '')
     CLOUDINARY_API_SECRET: str = os.getenv('CLOUDINARY_API_SECRET', '')
     
-    # Video processing settings
+    # Video settings
     CLIP_DURATION: int = 60  # seconds
-    SLEEP_INTERVAL: int = 3600  # 1 hour in seconds
+    SLEEP_INTERVAL: int = 3600  # 1 hour
     
     # File paths
     DOWNLOAD_PATH: str = 'downloads/'
     CLIPS_PATH: str = 'clips/'
     STATE_FILE: str = 'processing_state.json'
-    
-    # Google Drive settings
-    GDRIVE_CREDENTIALS_FILE: str = 'credentials.json'

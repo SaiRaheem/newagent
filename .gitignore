@@ -1,12 +1,15 @@
+# Env variables
 .env
 
-# Downloaded videos and clips
+# Video files and outputs
 downloads/
 clips/
 *.mp4
+*.mkv
 *.avi
 *.mov
-*.mkv
+*.tmp
+temp-audio.m4a
 
 # Processing state
 processing_state.json
@@ -16,30 +19,23 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
-.Python
-*.so
 
 # Virtual environment
 venv/
 env/
 ENV/
 
-# IDE files
+# Logs
+*.log
+logs/
+
+# IDE/editor settings
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 
-# Logs
-*.log
-logs/
-
 # OS files
 .DS_Store
 Thumbs.db
-
-# Temporary files
-temp-audio.m4a
-*.tmp
-EOF

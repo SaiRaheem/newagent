@@ -1,14 +1,13 @@
 import os
 import gdown
-from config import Config
 import re
+from config import Config
 
 class GoogleDriveDownloader:
     def __init__(self, config: Config):
         self.config = config
 
     def extract_file_id(self, url: str) -> str:
-        # Match /d/{ID}/ or id={ID}
         patterns = [
             r"https://drive\.google\.com/file/d/([a-zA-Z0-9_-]+)",
             r"id=([a-zA-Z0-9_-]+)"
@@ -20,7 +19,7 @@ class GoogleDriveDownloader:
         raise ValueError("❌ Invalid Google Drive URL. Couldn't extract file ID.")
 
     def download_video(self, gdrive_url: str, output_path: str) -> str:
-        """Download video from Google Drive using file ID"""
+        """Download video from Google Drive using direct URL"""
         try:
             os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
@@ -32,7 +31,7 @@ class GoogleDriveDownloader:
             download_url = f"https://drive.google.com/uc?id={file_id}"
 
             print(f"📥 Downloading video from Google Drive...\n→ {download_url}")
-            gdown.download(url=download_url, output=output_path, quiet=False)
+            gdown.download_url(url=download_url, output=output_path, quiet=False)
 
             if os.path.exists(output_path):
                 print(f"✅ Video downloaded successfully: {output_path}")

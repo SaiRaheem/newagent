@@ -27,7 +27,8 @@ class GoogleDriveDownloader:
             print(f"→ Downloading from: {download_url}")
 
             # Use gdown to download via URL
-            gdown.download(download_url, output=output_path, quiet=False)
+            gdown.download(id="1At6VPIBB02SNAdJSOg9eDlQKPqtvhSsw", output=output_path, quiet=False)
+
 
             if os.path.exists(output_path):
                 print(f"✅ Video downloaded successfully: {output_path}")

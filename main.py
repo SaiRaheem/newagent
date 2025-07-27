@@ -9,7 +9,7 @@ def main():
 
     DROPBOX_VIDEO_URL = "https://www.dropbox.com/scl/fi/24yybeouwv7qlxddt11nj/Young.Sheldon.S01E05.720p.BluRay.x264-GalaxyTV.mkv?rlkey=60vp4yi4wujnuv1sjuqyr61uk&st=lnzrvg9k&dl=1"
     VIDEO_START_TIME = 0
-    GDRIVE_VIDEO_URL = "https://drive.google.com/file/d/1At6VPIBB02SNAdJSOg9eDlQKPqtvhSsw/view?usp=sharing"
+    GDRIVE_VIDEO_URL = "https://drive.google.com/uc?id=1At6VPIBB02SNAdJSOg9eDlQKPqtvhSsw"
 
     VIDEO_END_TIME = None
 

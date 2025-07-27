@@ -1,68 +1,62 @@
 from moviepy.editor import VideoFileClip
-from moviepy.video.fx.all import lum_contrast, colorx, fadein, fadeout
-import os
-import time
+from PIL import Image, ImageEnhance
 import numpy as np
+import os
 from datetime import datetime
 from typing import Tuple
 from config import Config
+
+def enhance_frame(frame):
+    """Apply brightness, contrast, saturation, sharpness, and clarity."""
+    img = Image.fromarray(frame)
+
+    # Apply enhancements
+    img = ImageEnhance.Brightness(img).enhance(1.1)    # +10% Brightness
+    img = ImageEnhance.Contrast(img).enhance(1.2)      # +20% Contrast
+    img = ImageEnhance.Color(img).enhance(1.15)        # +15% Saturation
+    img = ImageEnhance.Sharpness(img).enhance(2.0)     # Sharpen edges
+    img = ImageEnhance.Contrast(img).enhance(1.1)      # Clarity (extra contrast)
+
+    return np.array(img)
 
 class VideoProcessor:
     def __init__(self, config: Config):
         self.config = config
 
     def get_video_duration(self, video_path: str) -> float:
-        """Get total duration of video in seconds"""
         with VideoFileClip(video_path) as video:
-            return video.duration
+            return float(video.duration)
 
-    def trim_video_clip(self, video_path: str, start_time: float, end_time: float, output_path: str) -> str:
-        """Trim and enhance video clip from start_time to end_time"""
+    def trim_video_clip(
+        self,
+        video_path: str,
+        start_time: float,
+        end_time: float,
+        output_path: str
+    ) -> str:
         try:
-            os.makedirs(os.path.dirname(output_path), exist_ok=True)
+            out_dir = os.path.dirname(output_path) or "."
+            os.makedirs(out_dir, exist_ok=True)
 
             with VideoFileClip(video_path) as video:
-                # Ensure we don't exceed video duration
                 actual_end_time = min(end_time, video.duration)
 
                 if start_time >= actual_end_time:
-                    raise ValueError(f"Start time {start_time} is beyond video duration {video.duration}")
+                    raise ValueError(
+                        f"Start time {start_time} is >= end ({actual_end_time}). "
+                        f"Video duration: {video.duration}"
+                    )
 
-                # Clip the video
                 clip = video.subclip(start_time, actual_end_time)
 
-                # Brightness adjustment (1.9x)
-                clip = clip.fl_image(lambda frame: np.clip(frame * 1.9, 0, 255).astype('uint8'))
+                # ✅ Apply enhancements
+                clip = clip.fl_image(enhance_frame)
 
-                # Contrast enhancement
-                clip = lum_contrast(clip, contrast=60, lum=0)
-
-                # Saturation enhancement (2x)
-                clip = colorx(clip, 2.0)
-
-                # Fade in and out
-                clip = fadein(clip, 1.0)     # 1 sec fade in
-                clip = fadeout(clip, 1.0)    # 1 sec fade out
-
-                # Vignette effect (basic radial darkening)
-                def vignette_effect(get_frame, t):
-                    frame = get_frame(t)
-                    h, w = frame.shape[:2]
-                    Y, X = np.ogrid[:h, :w]
-                    center_x, center_y = w / 2, h / 2
-                    dist_from_center = ((X - center_x)**2 + (Y - center_y)**2)**0.5
-                    mask = np.clip(1 - (dist_from_center / max(w, h)) * 0.4, 0.6, 1)
-                    vignette = np.dstack([mask] * 3)
-                    return (frame * vignette).astype('uint8')
-
-                clip = clip.fl(vignette_effect)
-
-                # Export the final processed video
                 clip.write_videofile(
                     output_path,
-                    codec='libx264',
-                    audio_codec='aac',
-                    temp_audiofile='temp-audio.m4a',
+                    codec="libx264",
+                    audio_codec="aac",
+                    temp_audiofile="temp-audio.m4a",
                     remove_temp=True,
                     verbose=False,
                     logger=None
@@ -75,14 +69,22 @@ class VideoProcessor:
             print(f"❌ Error creating clip: {e}")
             raise
 
-    def calculate_next_clip_times(self, current_position: float, clip_duration: int, video_duration: float) -> Tuple[float, float, bool]:
-        """Calculate start and end times for next clip"""
+    def calculate_next_clip_times(
+        self,
+        current_position: float,
+        clip_duration: int,
+        video_duration: float
+    ) -> Tuple[float, float, bool]:
         start_time = current_position
         end_time = min(current_position + clip_duration, video_duration)
         has_more = end_time < video_duration
         return start_time, end_time, has_more
 
-    def generate_clip_filename(self, clip_count: int, start_time: float, end_time: float) -> str:
-        """Generate filename for clip"""
+    def generate_clip_filename(
+        self,
+        clip_count: int,
+        start_time: float,
+        end_time: float
+    ) -> str:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         return f"clip_{clip_count:03d}_{timestamp}_{int(start_time)}s-{int(end_time)}s.mp4"

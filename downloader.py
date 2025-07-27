@@ -1,4 +1,3 @@
-import re
 import gdown
 import os
 from config import Config
@@ -8,7 +7,7 @@ class GoogleDriveDownloader:
         self.config = config
 
     def download_video(self, gdrive_url: str, output_path: str) -> str:
-        """Download video from Google Drive using gdown with file ID"""
+        """Download video from Google Drive using gdown with direct download URL"""
         try:
             os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
@@ -17,16 +16,18 @@ class GoogleDriveDownloader:
                 return output_path
 
             print(f"\n📥 Downloading video from Google Drive...")
-            
-            # Extract file ID using regex
-            match = re.search(r"/d/([a-zA-Z0-9_-]+)", gdrive_url)
-            if not match:
-                raise ValueError("Invalid Google Drive URL format.")
-            file_id = match.group(1)
-            print(f"→ File ID: {file_id}")
 
-            # Use file ID with gdown
-            gdown.download(id=file_id, output=output_path, quiet=False)
+            # Convert to direct download link
+            if "drive.google.com" in gdrive_url and "/file/d/" in gdrive_url:
+                file_id = gdrive_url.split("/file/d/")[1].split("/")[0]
+                download_url = f"https://drive.google.com/uc?export=download&id={file_id}"
+            else:
+                raise ValueError("Invalid Google Drive URL")
+
+            print(f"→ Downloading from: {download_url}")
+
+            # Use gdown to download via URL
+            gdown.download_url(download_url, output=output_path, quiet=False)
 
             if os.path.exists(output_path):
                 print(f"✅ Video downloaded successfully: {output_path}")

@@ -9,7 +9,7 @@ def main():
 
     DROPBOX_VIDEO_URL = "https://www.dropbox.com/scl/fi/24yybeouwv7qlxddt11nj/Young.Sheldon.S01E05.720p.BluRay.x264-GalaxyTV.mkv?rlkey=60vp4yi4wujnuv1sjuqyr61uk&st=lnzrvg9k&dl=1"
     VIDEO_START_TIME = 0
-    GDRIVE_VIDEO_URL = "https://drive.google.com/file/d/1UVoxrF0UPXo761sPKhxdSySA3mzm6MKv/view?usp=sharing"
+    GDRIVE_VIDEO_URL = "https://drive.google.com/file/d/1At6VPIBB02SNAdJSOg9eDlQKPqtvhSsw/view?usp=sharing"
 
     VIDEO_END_TIME = None
 
@@ -33,7 +33,7 @@ def main():
     try:
         scheduler = VideoScheduler(
             config=config,
-            gdrive_url=GDRIVE_VIDEO_URL,  # still uses same param name
+            gdrive_url=,  # still uses same param name
             video_start_time=VIDEO_START_TIME,
             video_end_time=VIDEO_END_TIME
         )

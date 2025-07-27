@@ -1,40 +1,38 @@
-import gdown
 import os
+import requests
 from config import Config
 
-class GoogleDriveDownloader:
+class DropboxDownloader:
     def __init__(self, config: Config):
         self.config = config
 
-    def download_video(self, gdrive_url: str, output_path: str) -> str:
-        """Download video from Google Drive using gdown with direct download URL"""
+    def download_video(self, dropbox_url: str, output_path: str) -> str:
+        """Download video from Dropbox direct link"""
         try:
             os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
             if os.path.exists(output_path):
-                print(f"Video already exists: {output_path}")
+                print(f"✅ Video already exists: {output_path}")
                 return output_path
 
-            print(f"\n📥 Downloading video from Google Drive...")
+            # Ensure URL has dl=1 to force direct download
+            if not dropbox_url.endswith("?dl=1"):
+                if "?" in dropbox_url:
+                    dropbox_url = dropbox_url.split("?")[0] + "?dl=1"
+                else:
+                    dropbox_url += "?dl=1"
 
-            # Convert to direct download link
-            if "drive.google.com" in gdrive_url and "/file/d/" in gdrive_url:
-                file_id = gdrive_url.split("/file/d/")[1].split("/")[0]
-                download_url = f"https://drive.google.com/uc?export=download&id={file_id}"
-            else:
-                raise ValueError("Invalid Google Drive URL")
+            print("📥 Downloading video from Dropbox...")
+            print(f"→ {dropbox_url}")
 
-            print(f"→ Downloading from: {download_url}")
+            with requests.get(dropbox_url, stream=True) as r:
+                r.raise_for_status()
+                with open(output_path, 'wb') as f:
+                    for chunk in r.iter_content(chunk_size=8192):
+                        f.write(chunk)
 
-            # Use gdown to download via URL
-            gdown.download(id="1At6VPIBB02SNAdJSOg9eDlQKPqtvhSsw", output=output_path, quiet=False)
-
-
-            if os.path.exists(output_path):
-                print(f"✅ Video downloaded successfully: {output_path}")
-                return output_path
-            else:
-                raise Exception("Download failed - file not found")
+            print(f"✅ Video downloaded successfully: {output_path}")
+            return output_path
 
         except Exception as e:
             print(f"❌ Error downloading video: {e}")

@@ -27,9 +27,11 @@ class GoogleDriveDownloader:
                 return output_path
 
             file_id = self.extract_file_id(gdrive_url)
-            print(f"📥 Downloading video from Google Drive...\n→ File ID: {file_id}")
+            download_url = f"https://drive.google.com/uc?id={file_id}"
 
-            gdown.download(id=file_id, output=output_path, quiet=False)
+            print(f"📥 Downloading video from Google Drive...\n→ {download_url}")
+
+            gdown.download(url=download_url, output=output_path, quiet=False)
 
             if os.path.exists(output_path):
                 print(f"✅ Video downloaded successfully: {output_path}")
@@ -40,7 +42,6 @@ class GoogleDriveDownloader:
         except Exception as e:
             print(f"❌ Error downloading video: {e}")
             raise
-
 
 
 

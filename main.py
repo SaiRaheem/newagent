@@ -33,7 +33,7 @@ def main():
     try:
         scheduler = VideoScheduler(
             config=config,
-            gdrive_url=GDRIVE_VIDEO_URL,  # still uses same param name
+            gdrive_url=DROPBOX_VIDEO_URL,  # still uses same param name
             video_start_time=VIDEO_START_TIME,
             video_end_time=VIDEO_END_TIME
         )

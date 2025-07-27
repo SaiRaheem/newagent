@@ -12,7 +12,7 @@ class VideoScheduler:
         self.video_start_time = video_start_time
         self.video_end_time = video_end_time
 
-        self.downloader = DropboxDriveDownloader(config)
+        self.downloader = DropboxDownloader(config)
         self.state_manager = StateManager(config.STATE_FILE)
         self.processor = VideoProcessor(config)
         self.cloud_uploader = CloudinaryUploader(config)

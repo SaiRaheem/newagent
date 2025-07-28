@@ -8,7 +8,8 @@ def main():
     config = Config()
 
     VIDEO_START_TIME = 0
-    DROPBOX_VIDEO_URL = "https://dl.dropboxusercontent.com/scl/fi/24yybeouwv7qlxddt11nj/Young.Sheldon.S01E05.720p.BluRay.x264-GalaxyTV.mkv?rlkey=60vp4yi4wujnuv1sjuqyr61uk&st=lnzrvg9k"
+    DROPBOX_VIDEO_URL ="https://dl.dropboxusercontent.com/scl/fi/24yybeouwv7qlxddt11nj/Young.Sheldon.S01E05.720p.BluRay.x264-GalaxyTV.mkv?rlkey=60vp4yi4wujnuv1sjuqyr61uk"
+ 
     GDRIVE_VIDEO_URL = "https://drive.google.com/uc?id=1At6VPIBB02SNAdJSOg9eDlQKPqtvhSsw&export=download"
 
     VIDEO_END_TIME = None

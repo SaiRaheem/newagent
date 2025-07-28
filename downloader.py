@@ -2,6 +2,9 @@ import os
 import requests
 
 class DropboxDownloader:
+    def __init__(self, config):
+        self.config = config
+
     def download_video(self, dropbox_url: str, output_path: str):
         try:
             os.makedirs(os.path.dirname(output_path), exist_ok=True)
@@ -24,6 +27,7 @@ class DropboxDownloader:
         except Exception as e:
             print(f"❌ Error downloading video: {e}")
             raise
+
 
 
 class StateManager:

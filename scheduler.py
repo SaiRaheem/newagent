@@ -18,7 +18,7 @@ class VideoScheduler:
         self.cloud_uploader = CloudinaryUploader(config)
         self.instagram_uploader = InstagramUploader(config)
 
-        self.video_file_path = os.path.join(config.DOWNLOAD_PATH, "source.mp4")
+        self.video_file_path = os.path.join(config.DOWNLOAD_PATH, "source.mkv")
         self._download_video_once()
 
     def _download_video_once(self):

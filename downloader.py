@@ -1,7 +1,5 @@
 import os
 import requests
-import json
-
 
 class DropboxDownloader:
     def __init__(self, config):
@@ -11,7 +9,7 @@ class DropboxDownloader:
         try:
             os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
-            # Convert to direct download
+            # Ensure it's a direct download link
             if "?dl=1" not in dropbox_url:
                 dropbox_url = dropbox_url.split("?")[0] + "?dl=1"
 
@@ -21,6 +19,11 @@ class DropboxDownloader:
             if response.status_code != 200:
                 raise Exception(f"Failed to download video. Status code: {response.status_code}")
 
+            # Detect if the response is HTML (instead of video)
+            head = response.content[:200].lower()
+            if b"<html" in head or b"<!doctype html" in head:
+                raise Exception("Downloaded content looks like a web page (HTML), not a video. The Dropbox link may be invalid or not direct.")
+
             with open(output_path, "wb") as f:
                 f.write(response.content)
 
@@ -29,6 +32,7 @@ class DropboxDownloader:
         except Exception as e:
             print(f"❌ Error downloading video: {e}")
             raise
+
 
 
 
